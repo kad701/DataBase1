@@ -10,7 +10,9 @@ public class Main {
 
             DataSeeder.insertTestData(con);
 
-            Queries.runAll(con);
+        // Queries.runAll(con);
+        //Queries.updateProductPrice(con); //  UPDATE(Ноутбук)
+              Queries.deleteUser(con, 3);      //  DELETE (id=3)
 
         } catch (Exception e) {
             e.printStackTrace();

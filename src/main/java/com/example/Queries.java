@@ -77,6 +77,56 @@ public class Queries {
                 System.out.println(rsC.getString("name") + " купил " +
                         rsC.getString("product") + " за " + rsC.getBigDecimal("price"));
             }
+
         }
+    }
+
+    // UPDATE
+    public static void updateProductPrice(Connection con) throws SQLException {
+        try (Statement stmt = con.createStatement()) {
+            System.out.println("\n=== UPDATE PRODUCT (Laptop +20%) ===");
+
+            int updatedRows = stmt.executeUpdate("""
+                        UPDATE product
+                        SET price = price * 1.2
+                        WHERE name = 'Ноутбук'
+                    """);
+
+            System.out.println("Обновлено строк: " + updatedRows);
+
+            ResultSet rs = stmt.executeQuery("SELECT name, price FROM product WHERE name='Laptop'");
+            while (rs.next()) {
+                System.out.println("Laptop новая цена: " + rs.getBigDecimal("price"));
+            }
+            System.out.println("\n=== PRODUCTS AFTER UPDATE ===");
+            ResultSet rsAll = stmt.executeQuery("SELECT product_id, name, price FROM product ORDER BY product_id");
+            while (rsAll.next()) {
+                System.out.println("product_id: " + rsAll.getInt("product_id") +
+                        " | Name: " + rsAll.getString("name") +
+                        " | Price: " + rsAll.getBigDecimal("price"));
+            }
+        }
+    }
+
+    //  DELETE
+    public static void deleteUser(Connection con, int userId) throws SQLException {
+        try (Statement stmt = con.createStatement()) {
+            System.out.println("\n=== DELETE USER (id = " + userId + ") ===");
+
+            int deletedRows = stmt.executeUpdate("""
+                    DELETE FROM users
+                    WHERE id = """ + userId);
+
+            System.out.println("Удалено строк: " + deletedRows);
+            System.out.println("\n=== USERS AFTER DELETE ===");
+            ResultSet rs = stmt.executeQuery("SELECT id, name, email FROM users ORDER BY id");
+            while (rs.next()) {
+                System.out.println("id: " + rs.getInt("id") +
+                        " | Name: " + rs.getString("name") +
+                        " | Email: " + rs.getString("email"));
+            }
+        }
+
+
     }
 }
